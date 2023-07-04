@@ -33,12 +33,14 @@ func main() {
 		if err != nil {
 			panic(fmt.Sprintf("unable to start API server: %v", err))
 		}
+		global.Logger.Infof("API server started")
 	}()
 
 	for {
 		n, _ := global.Storage.GetAll(context.Background())
 		global.Logger.Infof("current ipChan length: %d, storage length: %d", len(ipChan), len(n))
 		if len(ipChan) < 100 {
+			global.Logger.Debugf("length of ipChan is less than 100, fetching ips from getters")
 			go putIpsToChan(ipChan)
 		}
 		time.Sleep(30 * time.Second)

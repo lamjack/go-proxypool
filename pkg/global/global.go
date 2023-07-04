@@ -38,7 +38,7 @@ func Initialize() {
 	lvl := Config.GetString("log_level")
 	level, err := log.ParseLevel(lvl)
 	if err != nil {
-		Logger.SetLevel(log.WarnLevel)
+		Logger.SetLevel(log.InfoLevel)
 	}
 	Logger.SetLevel(level)
 

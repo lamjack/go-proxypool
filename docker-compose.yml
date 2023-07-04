@@ -3,10 +3,14 @@ version: "3.9"
 services:
   proxypool:
     container_name: proxypool
+    ports:
+      - "8080:8080"
     build:
       context: .
     environment:
       - GIN_MODE=release
+      - PROXYPOOL_LOG_LEVEL=info
+      - PROXYPOOL_PORT=8080
       - PROXYPOOL_STORAGE=redis
       - PROXYPOOL_REDIS.HOST=redis
       - PROXYPOOL_REDIS.PORT=6379

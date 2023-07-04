@@ -1,9 +1,11 @@
-storage: "redis" # memory, redis
-log_level: "WarnLevel" # DebugLevel, InfoLevel, WarnLevel, ErrorLevel, FatalLevel, PanicLevel
+storage: "memory" # memory, redis
+log_level: "warn" # debug, info, warn, error, fatal, panic
 
 redis:
   host: 127.0.0.1
   db: 1
   port: 6379
-  
+
+test_url: "http://www.baidu.com"
+
 qiyun_apikey:

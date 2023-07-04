@@ -15,7 +15,7 @@ import (
 func Qiyun() (result []*models.Ip) {
 	apikey := global.Config.GetString("qiyun_apikey")
 	if len(apikey) == 0 {
-		global.Logger.Error("unable to get qiyun apikey from config")
+		global.Logger.Warnf("unable to get qiyun apikey from config")
 		return nil
 	}
 	url := fmt.Sprintf("http://dev.qydailiip.com/api/?apikey=%s&num=100&type=json&line=unix&proxy_type=putong&sort=1&model=all&protocol=http&address=&kill_address=&port=&kill_port=&today=false&abroad=1&isp=&anonymity=", apikey)
@@ -66,6 +66,8 @@ func fetchAndParseIps(url string) (result []*models.Ip, err error) {
 			Port: port,
 		})
 	}
+
+	global.Logger.Debugf("fetched ips from QiYun, len %d", len(ips))
 
 	return ips, nil
 }
