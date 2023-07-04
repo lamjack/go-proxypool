@@ -65,7 +65,7 @@ func isValidProxy(proxyURL string) bool {
 		Transport: &http.Transport{
 			Proxy: http.ProxyURL(&url.URL{Scheme: "http", Host: proxyURL}),
 		},
-		Timeout: 3 * time.Second,
+		Timeout: 5 * time.Second,
 	}
 
 	resp, err := client.Get(global.Config.GetString("test_url"))

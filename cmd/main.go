@@ -18,14 +18,15 @@ func main() {
 
 	global.Initialize()
 
-	ipChan := make(chan *models.Ip, 100)
+	ipChanLen := global.Config.GetInt("ip_chan_len")
+	ipChan := make(chan *models.Ip, ipChanLen)
 
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go utils.ValidateAndStoreProxies(ipChan, &wg)
 
 	// Periodically validate proxies every minute.
-	go utils.PeriodicProxyValidation(5 * time.Second)
+	go utils.PeriodicProxyValidation(10 * time.Second)
 
 	apiServer := api.NewServer(8080)
 	go func() {
@@ -39,18 +40,19 @@ func main() {
 	for {
 		n, _ := global.Storage.GetAll(context.Background())
 		global.Logger.Infof("current ipChan length: %d, storage length: %d", len(ipChan), len(n))
-		if len(ipChan) < 100 {
+		if len(ipChan) < ipChanLen {
 			global.Logger.Debugf("length of ipChan is less than 100, fetching ips from getters")
 			go putIpsToChan(ipChan)
 		}
-		time.Sleep(30 * time.Second)
+		time.Sleep(1 * time.Minute)
 	}
 }
 
 func putIpsToChan(ipChan chan<- *models.Ip) {
 	var wg sync.WaitGroup
 	funs := []func() []*models.Ip{
-		getters.Qiyun,
+		getters.KuaiDaiLi,
+		//getters.Qiyun,
 	}
 	for _, f := range funs {
 		wg.Add(1)
