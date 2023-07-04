@@ -5,7 +5,7 @@ import (
 	"github.com/redis/go-redis/v9"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	storage "go-proxypool/pkg/storage"
+	"go-proxypool/pkg/storage"
 )
 
 var (
@@ -16,7 +16,6 @@ var (
 
 func Initialize() {
 	Logger = log.New()
-	Logger.SetLevel(log.DebugLevel)
 	Logger.SetFormatter(&log.TextFormatter{})
 
 	Config = viper.New()
@@ -34,6 +33,14 @@ func Initialize() {
 	if err != nil {
 		Logger.Fatalf("failed to read config: %v", err)
 	}
+
+	// Set logger level.
+	lvl := Config.GetString("log_level")
+	level, err := log.ParseLevel(lvl)
+	if err != nil {
+		Logger.SetLevel(log.WarnLevel)
+	}
+	Logger.SetLevel(level)
 
 	s := Config.GetString("storage")
 	switch s {

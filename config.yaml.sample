@@ -1,4 +1,5 @@
 storage: "redis" # memory, redis
+log_level: "WarnLevel" # DebugLevel, InfoLevel, WarnLevel, ErrorLevel, FatalLevel, PanicLevel
 
 redis:
   host: 127.0.0.1
