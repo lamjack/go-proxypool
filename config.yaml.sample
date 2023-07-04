@@ -5,6 +5,7 @@ redis:
   host: 127.0.0.1
   db: 1
   port: 6379
+  password:
 
 test_url: "http://www.baidu.com"
 

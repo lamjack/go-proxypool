@@ -48,10 +48,14 @@ func Initialize() {
 		Storage = storage.NewMemoryStorage()
 		break
 	case "redis":
-		Storage = storage.NewRedisStorage(&redis.Options{
+		redisOpt := &redis.Options{
 			Addr: fmt.Sprintf("%s:%d", Config.GetString("redis.host"), Config.GetInt("redis.port")),
 			DB:   Config.GetInt("redis.db"),
-		})
+		}
+		if Config.GetString("redis.password") != "" {
+			redisOpt.Password = Config.GetString("redis.password")
+		}
+		Storage = storage.NewRedisStorage(redisOpt)
 		break
 	default:
 		Logger.Fatalf("unknown storage: %s", s)
