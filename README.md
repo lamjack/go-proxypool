@@ -22,6 +22,36 @@ IP 存储到指定的存储器中，并提供代理有效性检测功能，将�
     └── utils                  # 工具方法
 ```
 
+## 使用
+你可以使用 docker compose 进行部署，下面是一个简单的 docker compose 配置文件示例：
+
+```yaml
+version: "3.9"
+
+services:
+  proxypool:
+    container_name: proxypool
+    image: docker.io/lamjack/poolproxy
+    ports:
+      - "8080:8080"
+    environment:
+      - GIN_MODE=release
+      - PROXYPOOL_LOG_LEVEL=info
+      - PROXYPOOL_PORT=8080
+      - PROXYPOOL_STORAGE=redis
+      - PROXYPOOL_REDIS.HOST=redis
+      - PROXYPOOL_REDIS.PORT=6379
+      - PROXYPOOL_REDIS.DB=0
+      - PROXYPOOL_QIYUN_APIKEY=
+    depends_on:
+      - redis
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    command: redis-server --appendonly yes
+```
+
 ## 配置文件
 
 ```yaml
