@@ -20,13 +20,16 @@ func Initialize() {
 	Logger.SetFormatter(&log.TextFormatter{})
 
 	Config = viper.New()
-	Config.AutomaticEnv()
 	Config.SetEnvPrefix("PROXYPOOL")
 	Config.SetConfigName("config")
 	Config.SetConfigType("yaml")
 	Config.AddConfigPath("/etc/proxypool")
 	Config.AddConfigPath("$HOME/.proxypool")
 	Config.AddConfigPath(".")
+
+	Config.AutomaticEnv()
+	//viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+
 	err := Config.ReadInConfig()
 	if err != nil {
 		Logger.Fatalf("failed to read config: %v", err)

@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  proxypool:
+    container_name: proxypool
+    build:
+      context: .
+    environment:
+      - GIN_MODE=release
+      - PROXYPOOL_STORAGE=redis
+      - PROXYPOOL_REDIS.HOST=redis
+      - PROXYPOOL_REDIS.PORT=6379
+      - PROXYPOOL_REDIS.DB=0
+      - PROXYPOOL_QIYUN_APIKEY=
+    depends_on:
+      - redis
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    command: redis-server --appendonly yes
